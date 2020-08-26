@@ -1,0 +1,63 @@
+{% load staticfiles %}
+{% include 'check_logstate.html' %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/buyInfo.css' %}" />
+<div id="buyInfo_EditDiv">
+	<form id="buyInfoModifyForm" enctype="multipart/form-data"  method="post">
+        {% csrf_token %}
+		<div>
+			<span class="label">进货编号:</span>
+			<span class="inputControl">
+				<input class="textbox" type="text" id="buyInfo_buyId_modify" name="buyInfo.buyId" value="{{ buyId }}" style="width:200px" />
+			</span>
+		</div>
+
+		<div>
+			<span class="label">进货产品:</span>
+			<span class="inputControl">
+				<input class="textbox"  id="buyInfo_productObj_productNo_modify" name="buyInfo.productObj.productNo" style="width: auto"/>
+			</span>
+		</div>
+		<div>
+			<span class="label">进货日期:</span>
+			<span class="inputControl">
+				<input class="textbox" type="text" id="buyInfo_buyDate_modify" name="buyInfo.buyDate" />
+
+			</span>
+
+		</div>
+		<div>
+			<span class="label">进货单价:</span>
+			<span class="inputControl">
+				<input class="textbox" type="text" id="buyInfo_price_modify" name="buyInfo.price" style="width:200px" />
+
+			</span>
+
+		</div>
+		<div>
+			<span class="label">进货数量:</span>
+			<span class="inputControl">
+				<input class="textbox" type="text" id="buyInfo_count_modify" name="buyInfo.count" style="width:80px" />
+
+			</span>
+
+		</div>
+		<div>
+			<span class="label">供应商:</span>
+			<span class="inputControl">
+				<input class="textbox"  id="buyInfo_supplyerObj_supplyerId_modify" name="buyInfo.supplyerObj.supplyerId" style="width: auto"/>
+			</span>
+		</div>
+		<div>
+			<span class="label">负责人:</span>
+			<span class="inputControl">
+				<input class="textbox" type="text" id="buyInfo_personName_modify" name="buyInfo.personName" style="width:200px" />
+
+			</span>
+
+		</div>
+		<div class="operation">
+			<a id="buyInfoModifyButton" class="easyui-linkbutton">更新</a> 
+		</div>
+	</form>
+</div>
+<script src="{% static 'js/BuyInfo/buyInfo_modify.js' %}"></script>

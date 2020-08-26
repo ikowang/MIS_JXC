@@ -1,0 +1,81 @@
+{% include 'check_logstate.html' %}
+{% load staticfiles %}
+<link rel="stylesheet" type="text/css" href="{% static '/css/buyInfo.css' %}" />
+
+{% csrf_token %}
+<div id="buyInfo_manage"></div>
+<div id="buyInfo_manage_tool" style="padding:5px;">
+	<div style="margin-bottom:5px;">
+		<a href="#" class="easyui-linkbutton" iconCls="icon-edit-new" plain="true" onclick="buyInfo_manage_tool.edit();">修改</a>
+		<a href="#" class="easyui-linkbutton" iconCls="icon-delete-new" plain="true" onclick="buyInfo_manage_tool.remove();">删除</a>
+		<a href="#" class="easyui-linkbutton" iconCls="icon-reload" plain="true"  onclick="buyInfo_manage_tool.reload();">刷新</a>
+		<a href="#" class="easyui-linkbutton" iconCls="icon-redo" plain="true" onclick="buyInfo_manage_tool.redo();">取消选择</a>
+		<a href="#" class="easyui-linkbutton" iconCls="icon-export" plain="true" onclick="buyInfo_manage_tool.exportExcel();">导出到excel</a>
+	</div>
+	<div style="padding:0 0 0 7px;color:#333;">
+		<form id="buyInfoQueryForm" method="get">
+			进货产品：<input class="textbox" type="text" id="productObj_productNo_query" name="productObj.productNo" style="width: auto"/>
+			进货日期：<input type="text" id="buyDate" name="buyDate" class="easyui-datebox" editable="false" style="width:100px">
+			供应商：<input class="textbox" type="text" id="supplyerObj_supplyerId_query" name="supplyerObj.supplyerId" style="width: auto"/>
+			负责人：<input type="text" class="textbox" id="personName" name="personName" style="width:110px" />
+			<a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="buyInfo_manage_tool.search();">查询</a>
+		</form>	
+	</div>
+</div>
+
+<div id="buyInfoEditDiv">
+	<form id="buyInfoEditForm" enctype="multipart/form-data"  method="post">
+        {% csrf_token %}
+		<div>
+			<span class="label">进货编号:</span>
+			<span class="inputControl">
+				<input class="textbox" type="text" id="buyInfo_buyId_edit" name="buyInfo.buyId" style="width:200px" />
+			</span>
+		</div>
+		<div>
+			<span class="label">进货产品:</span>
+			<span class="inputControl">
+				<input class="textbox"  id="buyInfo_productObj_productNo_edit" name="buyInfo.productObj.productNo" style="width: auto"/>
+			</span>
+		</div>
+		<div>
+			<span class="label">进货日期:</span>
+			<span class="inputControl">
+				<input class="textbox" type="text" id="buyInfo_buyDate_edit" name="buyInfo.buyDate" />
+
+			</span>
+
+		</div>
+		<div>
+			<span class="label">进货单价:</span>
+			<span class="inputControl">
+				<input class="textbox" type="text" id="buyInfo_price_edit" name="buyInfo.price" style="width:200px" />
+
+			</span>
+
+		</div>
+		<div>
+			<span class="label">进货数量:</span>
+			<span class="inputControl">
+				<input class="textbox" type="text" id="buyInfo_count_edit" name="buyInfo.count" style="width:80px" />
+
+			</span>
+
+		</div>
+		<div>
+			<span class="label">供应商:</span>
+			<span class="inputControl">
+				<input class="textbox"  id="buyInfo_supplyerObj_supplyerId_edit" name="buyInfo.supplyerObj.supplyerId" style="width: auto"/>
+			</span>
+		</div>
+		<div>
+			<span class="label">负责人:</span>
+			<span class="inputControl">
+				<input class="textbox" type="text" id="buyInfo_personName_edit" name="buyInfo.personName" style="width:200px" />
+
+			</span>
+
+		</div>
+	</form>
+</div>
+<script type="text/javascript" src="{% static 'js/BuyInfo/buyInfo_manage.js' %}"></script>

@@ -1,0 +1,66 @@
+{% include 'check_logstate.html' %}
+{% load staticfiles %}
+
+ <link rel="stylesheet" type="text/css" href="{% static 'css/buyInfo.css' %}" />
+<div id="buyInfoAddDiv">
+    {% csrf_token %}
+	<form id="buyInfoAddForm" enctype="multipart/form-data"  method="post">
+		<div>
+			<span class="label">进货产品:</span>
+			<span class="inputControl">
+                <select id="buyInfo_productObj_productNo" name="buyInfo.productObj.productNo" style="width:200px;height:25px;">
+                    {% for productInfo in productInfos %}
+                    <option value="{{ productInfo.productNo }}">{{ productInfo.productName }}</option>
+                    {% endfor %}
+                </select>
+			</span>
+		</div>
+		<div>
+			<span class="label">进货日期:</span>
+			<span class="inputControl">
+				<input class="textbox" type="text" id="buyInfo_buyDate" name="buyInfo.buyDate" />
+
+			</span>
+
+		</div>
+		<div>
+			<span class="label">进货单价:</span>
+			<span class="inputControl">
+				<input class="textbox" type="text" id="buyInfo_price" name="buyInfo.price" style="width:200px" />
+
+			</span>
+
+		</div>
+		<div>
+			<span class="label">进货数量:</span>
+			<span class="inputControl">
+				<input class="textbox" type="text" id="buyInfo_count" name="buyInfo.count" style="width:80px" />
+
+			</span>
+
+		</div>
+		<div>
+			<span class="label">供应商:</span>
+			<span class="inputControl">
+                <select id="buyInfo_supplyerObj_supplyerId" name="buyInfo.supplyerObj.supplyerId" style="width:200px;height:25px;">
+                    {% for supplyer in supplyers %}
+                    <option value="{{ supplyer.supplyerId }}">{{ supplyer.supplyerName }}</option>
+                    {% endfor %}
+                </select>
+			</span>
+		</div>
+		<div>
+			<span class="label">负责人:</span>
+			<span class="inputControl">
+				<input class="textbox" type="text" id="buyInfo_personName" name="buyInfo.personName" style="width:200px" />
+
+			</span>
+
+		</div>
+		<div class="operation">
+			<a id="buyInfoAddButton" class="easyui-linkbutton">添加</a>
+			<a id="buyInfoClearButton" class="easyui-linkbutton">重填</a>
+		</div> 
+	</form>
+</div>
+<script src="{% static 'js/BuyInfo/buyInfo_add.js' %}"></script>

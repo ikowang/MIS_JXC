@@ -1,0 +1,51 @@
+{% load staticfiles %}
+{% include 'check_logstate.html' %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/supplyer.css' %}" />
+<div id="supplyer_EditDiv">
+	<form id="supplyerModifyForm" enctype="multipart/form-data"  method="post">
+        {% csrf_token %}
+		<div>
+			<span class="label">供应商编号:</span>
+			<span class="inputControl">
+				<input class="textbox" type="text" id="supplyer_supplyerId_modify" name="supplyer.supplyerId" value="{{ supplyerId }}" style="width:200px" />
+			</span>
+		</div>
+
+		<div>
+			<span class="label">供应商名称:</span>
+			<span class="inputControl">
+				<input class="textbox" type="text" id="supplyer_supplyerName_modify" name="supplyer.supplyerName" style="width:200px" />
+
+			</span>
+
+		</div>
+		<div>
+			<span class="label">供应商电话:</span>
+			<span class="inputControl">
+				<input class="textbox" type="text" id="supplyer_telephone_modify" name="supplyer.telephone" style="width:200px" />
+
+			</span>
+
+		</div>
+		<div>
+			<span class="label">联系人:</span>
+			<span class="inputControl">
+				<input class="textbox" type="text" id="supplyer_personName_modify" name="supplyer.personName" style="width:200px" />
+
+			</span>
+
+		</div>
+		<div>
+			<span class="label">供应商地址:</span>
+			<span class="inputControl">
+				<input class="textbox" type="text" id="supplyer_address_modify" name="supplyer.address" style="width:200px" />
+
+			</span>
+
+		</div>
+		<div class="operation">
+			<a id="supplyerModifyButton" class="easyui-linkbutton">更新</a> 
+		</div>
+	</form>
+</div>
+<script src="{% static 'js/Supplyer/supplyer_modify.js' %}"></script>

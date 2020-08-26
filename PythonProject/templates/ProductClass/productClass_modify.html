@@ -1,0 +1,27 @@
+{% load staticfiles %}
+{% include 'check_logstate.html' %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/productClass.css' %}" />
+<div id="productClass_EditDiv">
+	<form id="productClassModifyForm" enctype="multipart/form-data"  method="post">
+        {% csrf_token %}
+		<div>
+			<span class="label">商品类别编号:</span>
+			<span class="inputControl">
+				<input class="textbox" type="text" id="productClass_productClassId_modify" name="productClass.productClassId" value="{{ productClassId }}" style="width:200px" />
+			</span>
+		</div>
+
+		<div>
+			<span class="label">商品类别名称:</span>
+			<span class="inputControl">
+				<input class="textbox" type="text" id="productClass_productClassName_modify" name="productClass.productClassName" style="width:200px" />
+
+			</span>
+
+		</div>
+		<div class="operation">
+			<a id="productClassModifyButton" class="easyui-linkbutton">更新</a> 
+		</div>
+	</form>
+</div>
+<script src="{% static 'js/ProductClass/productClass_modify.js' %}"></script>

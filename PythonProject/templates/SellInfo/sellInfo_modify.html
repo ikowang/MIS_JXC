@@ -1,0 +1,63 @@
+{% load staticfiles %}
+{% include 'check_logstate.html' %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/sellInfo.css' %}" />
+<div id="sellInfo_EditDiv">
+	<form id="sellInfoModifyForm" enctype="multipart/form-data"  method="post">
+        {% csrf_token %}
+		<div>
+			<span class="label">销售编号:</span>
+			<span class="inputControl">
+				<input class="textbox" type="text" id="sellInfo_sellId_modify" name="sellInfo.sellId" value="{{ sellId }}" style="width:200px" />
+			</span>
+		</div>
+
+		<div>
+			<span class="label">销售产品:</span>
+			<span class="inputControl">
+				<input class="textbox"  id="sellInfo_productObj_productNo_modify" name="sellInfo.productObj.productNo" style="width: auto"/>
+			</span>
+		</div>
+		<div>
+			<span class="label">销售日期:</span>
+			<span class="inputControl">
+				<input class="textbox" type="text" id="sellInfo_sellDate_modify" name="sellInfo.sellDate" />
+
+			</span>
+
+		</div>
+		<div>
+			<span class="label">销售价格:</span>
+			<span class="inputControl">
+				<input class="textbox" type="text" id="sellInfo_price_modify" name="sellInfo.price" style="width:80px" />
+
+			</span>
+
+		</div>
+		<div>
+			<span class="label">销售数量:</span>
+			<span class="inputControl">
+				<input class="textbox" type="text" id="sellInfo_count_modify" name="sellInfo.count" style="width:80px" />
+
+			</span>
+
+		</div>
+		<div>
+			<span class="label">销售客户:</span>
+			<span class="inputControl">
+				<input class="textbox"  id="sellInfo_customerObj_customerId_modify" name="sellInfo.customerObj.customerId" style="width: auto"/>
+			</span>
+		</div>
+		<div>
+			<span class="label">销售负责人:</span>
+			<span class="inputControl">
+				<input class="textbox" type="text" id="sellInfo_personName_modify" name="sellInfo.personName" style="width:200px" />
+
+			</span>
+
+		</div>
+		<div class="operation">
+			<a id="sellInfoModifyButton" class="easyui-linkbutton">更新</a> 
+		</div>
+	</form>
+</div>
+<script src="{% static 'js/SellInfo/sellInfo_modify.js' %}"></script>

@@ -1,0 +1,72 @@
+{% load staticfiles %}
+{% include 'check_logstate.html' %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/productInfo.css' %}" />
+<div id="productInfo_EditDiv">
+	<form id="productInfoModifyForm" enctype="multipart/form-data"  method="post">
+        {% csrf_token %}
+		<div>
+			<span class="label">产品编号:</span>
+			<span class="inputControl">
+				<input class="textbox" type="text" id="productInfo_productNo_modify" name="productInfo.productNo" value="{{ productNo }}" style="width:200px" />
+			</span>
+		</div>
+
+		<div>
+			<span class="label">产品类别:</span>
+			<span class="inputControl">
+				<input class="textbox"  id="productInfo_productClass_productClassId_modify" name="productInfo.productClass.productClassId" style="width: auto"/>
+			</span>
+		</div>
+		<div>
+			<span class="label">产品名称:</span>
+			<span class="inputControl">
+				<input class="textbox" type="text" id="productInfo_productName_modify" name="productInfo.productName" style="width:200px" />
+
+			</span>
+
+		</div>
+		<div>
+			<span class="label">产品图片:</span>
+			<span class="inputControl">
+				<img id="productInfo_productPhotoImgMod" width="200px" border="0px"/><br/>
+				<input id="productInfo_productPhotoMod" name="productInfo.productPhoto" type="file" size="50" />
+			</span>
+		</div>
+		<div>
+			<span class="label">产品单价:</span>
+			<span class="inputControl">
+				<input class="textbox" type="text" id="productInfo_price_modify" name="productInfo.price" style="width:80px" />
+
+			</span>
+
+		</div>
+		<div>
+			<span class="label">产品库存:</span>
+			<span class="inputControl">
+				<input class="textbox" type="text" id="productInfo_leftCount_modify" name="productInfo.leftCount" style="width:80px" />
+
+			</span>
+
+		</div>
+		<div>
+			<span class="label">生产日期:</span>
+			<span class="inputControl">
+				<input class="textbox" type="text" id="productInfo_madeDate_modify" name="productInfo.madeDate" />
+
+			</span>
+
+		</div>
+		<div>
+			<span class="label">产品描述:</span>
+			<span class="inputControl">
+				<textarea id="productInfo_productDesc_modify" name="productInfo.productDesc" type="text/plain"   style="width:750px;height:500px;"></textarea>
+
+			</span>
+
+		</div>
+		<div class="operation">
+			<a id="productInfoModifyButton" class="easyui-linkbutton">更新</a> 
+		</div>
+	</form>
+</div>
+<script src="{% static 'js/ProductInfo/productInfo_modify.js' %}"></script>

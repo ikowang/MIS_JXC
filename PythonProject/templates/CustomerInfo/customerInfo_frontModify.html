@@ -1,0 +1,126 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1 , user-scalable=no">
+  <TITLE>修改客户信息信息</TITLE>
+  <link href="{% static 'plugins/bootstrap.css' %}" rel="stylesheet">
+  <link href="{% static 'plugins/bootstrap-dashen.css' %}" rel="stylesheet">
+  <link href="{% static 'plugins/font-awesome.css' %}" rel="stylesheet">
+  <link href="{% static 'plugins/animate.css' %}" rel="stylesheet">
+</head>
+<body style="margin-top:70px;"> 
+<div class="container">
+    {% include 'header.html' %}
+	<div class="col-md-9 wow fadeInLeft">
+	<ul class="breadcrumb">
+  		<li><a href="{% url 'Index:index' %}">首页</a></li>
+  		<li class="active">客户信息信息修改</li>
+	</ul>
+		<div class="row"> 
+      	<form class="form-horizontal" name="customerInfoEditForm" id="customerInfoEditForm" enctype="multipart/form-data" method="post"  class="mar_t15">
+            {% csrf_token %}
+		  <div class="form-group">
+			 <label for="customerInfo_customerId_edit" class="col-md-3 text-right">客户编号:</label>
+			 <div class="col-md-9"> 
+			 	<input type="text" id="customerInfo_customerId_edit" name="customerInfo.customerId" class="form-control" placeholder="请输入客户编号" readOnly>
+			 </div>
+		  </div> 
+		  <div class="form-group">
+		  	 <label for="customerInfo_customerName_edit" class="col-md-3 text-right">客户名称:</label>
+		  	 <div class="col-md-9">
+			    <input type="text" id="customerInfo_customerName_edit" name="customerInfo.customerName" class="form-control" placeholder="请输入客户名称">
+			 </div>
+		  </div>
+		  <div class="form-group">
+		  	 <label for="customerInfo_personName_edit" class="col-md-3 text-right">联系人:</label>
+		  	 <div class="col-md-9">
+			    <input type="text" id="customerInfo_personName_edit" name="customerInfo.personName" class="form-control" placeholder="请输入联系人">
+			 </div>
+		  </div>
+		  <div class="form-group">
+		  	 <label for="customerInfo_telephone_edit" class="col-md-3 text-right">联系电话:</label>
+		  	 <div class="col-md-9">
+			    <input type="text" id="customerInfo_telephone_edit" name="customerInfo.telephone" class="form-control" placeholder="请输入联系电话">
+			 </div>
+		  </div>
+		  <div class="form-group">
+		  	 <label for="customerInfo_address_edit" class="col-md-3 text-right">联系地址:</label>
+		  	 <div class="col-md-9">
+			    <input type="text" id="customerInfo_address_edit" name="customerInfo.address" class="form-control" placeholder="请输入联系地址">
+			 </div>
+		  </div>
+			  <div class="form-group">
+			  	<span class="col-md-3""></span>
+			  	<span onclick="ajaxCustomerInfoModify();" class="btn btn-primary bottom5 top5">修改</span>
+			  </div>
+		</form> 
+	    <style>#customerInfoEditForm .form-group {margin-bottom:5px;}  </style>
+      </div>
+   </div>
+</div>
+
+
+{% include 'footer.html' %}
+<script src="{% static 'plugins/jquery.min.js' %}"></script>
+<script src="{% static 'plugins/bootstrap.js' %}"></script>
+<script src="{% static 'plugins/wow.min.js' %}"></script>
+<script src="{% static 'plugins/bootstrap-datetimepicker.min.js' %}"></script>
+<script src="{% static 'plugins/locales/bootstrap-datetimepicker.zh-CN.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jsdate.js' %}"></script>
+<script>
+/*弹出修改客户信息界面并初始化数据*/
+ function ajaxModifyQuery(customerId) {
+	$.ajax({
+		url :  "/CustomerInfo/update/" + customerId,
+		type : "get",
+		dataType: "json",
+		success : function (customerInfo, response, status) {
+			if (customerInfo) {
+				$("#customerInfo_customerId_edit").val(customerInfo.customerId);
+				$("#customerInfo_customerName_edit").val(customerInfo.customerName);
+				$("#customerInfo_personName_edit").val(customerInfo.personName);
+				$("#customerInfo_telephone_edit").val(customerInfo.telephone);
+				$("#customerInfo_address_edit").val(customerInfo.address);
+			} else {
+				alert("获取信息失败！");
+			}
+		}
+	});
+}
+
+/*ajax方式提交客户信息信息表单给服务器端修改*/
+function ajaxCustomerInfoModify() {
+	$.ajax({
+		url :  "/CustomerInfo/update/" + $("#customerInfo_customerId_edit").val(),
+		type : "post",
+		dataType: "json",
+		data: new FormData($("#customerInfoEditForm")[0]),
+		success : function (obj, response, status) {
+            if(obj.success){
+                alert("信息修改成功！");
+                location.reload(true);
+                $("#customerInfoQueryForm").submit();
+            }else{
+                alert(obj.message);
+            } 
+		},
+		processData: false,
+		contentType: false,
+	});
+}
+
+$(function(){
+        /*小屏幕导航点击关闭菜单*/
+        $('.navbar-collapse a').click(function(){
+            $('.navbar-collapse').collapse('hide');
+        });
+        new WOW().init();
+    setTimeout(ajaxModifyQuery,100,"{{ customerId }}");
+ })
+ </script> 
+</body>
+</html>
+

@@ -1,0 +1,81 @@
+{% include 'check_logstate.html' %}
+{% load staticfiles %}
+<link rel="stylesheet" type="text/css" href="{% static '/css/sellInfo.css' %}" />
+
+{% csrf_token %}
+<div id="sellInfo_manage"></div>
+<div id="sellInfo_manage_tool" style="padding:5px;">
+	<div style="margin-bottom:5px;">
+		<a href="#" class="easyui-linkbutton" iconCls="icon-edit-new" plain="true" onclick="sellInfo_manage_tool.edit();">修改</a>
+		<a href="#" class="easyui-linkbutton" iconCls="icon-delete-new" plain="true" onclick="sellInfo_manage_tool.remove();">删除</a>
+		<a href="#" class="easyui-linkbutton" iconCls="icon-reload" plain="true"  onclick="sellInfo_manage_tool.reload();">刷新</a>
+		<a href="#" class="easyui-linkbutton" iconCls="icon-redo" plain="true" onclick="sellInfo_manage_tool.redo();">取消选择</a>
+		<a href="#" class="easyui-linkbutton" iconCls="icon-export" plain="true" onclick="sellInfo_manage_tool.exportExcel();">导出到excel</a>
+	</div>
+	<div style="padding:0 0 0 7px;color:#333;">
+		<form id="sellInfoQueryForm" method="get">
+			销售产品：<input class="textbox" type="text" id="productObj_productNo_query" name="productObj.productNo" style="width: auto"/>
+			销售日期：<input type="text" id="sellDate" name="sellDate" class="easyui-datebox" editable="false" style="width:100px">
+			销售客户：<input class="textbox" type="text" id="customerObj_customerId_query" name="customerObj.customerId" style="width: auto"/>
+			销售负责人：<input type="text" class="textbox" id="personName" name="personName" style="width:110px" />
+			<a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="sellInfo_manage_tool.search();">查询</a>
+		</form>	
+	</div>
+</div>
+
+<div id="sellInfoEditDiv">
+	<form id="sellInfoEditForm" enctype="multipart/form-data"  method="post">
+        {% csrf_token %}
+		<div>
+			<span class="label">销售编号:</span>
+			<span class="inputControl">
+				<input class="textbox" type="text" id="sellInfo_sellId_edit" name="sellInfo.sellId" style="width:200px" />
+			</span>
+		</div>
+		<div>
+			<span class="label">销售产品:</span>
+			<span class="inputControl">
+				<input class="textbox"  id="sellInfo_productObj_productNo_edit" name="sellInfo.productObj.productNo" style="width: auto"/>
+			</span>
+		</div>
+		<div>
+			<span class="label">销售日期:</span>
+			<span class="inputControl">
+				<input class="textbox" type="text" id="sellInfo_sellDate_edit" name="sellInfo.sellDate" />
+
+			</span>
+
+		</div>
+		<div>
+			<span class="label">销售价格:</span>
+			<span class="inputControl">
+				<input class="textbox" type="text" id="sellInfo_price_edit" name="sellInfo.price" style="width:80px" />
+
+			</span>
+
+		</div>
+		<div>
+			<span class="label">销售数量:</span>
+			<span class="inputControl">
+				<input class="textbox" type="text" id="sellInfo_count_edit" name="sellInfo.count" style="width:80px" />
+
+			</span>
+
+		</div>
+		<div>
+			<span class="label">销售客户:</span>
+			<span class="inputControl">
+				<input class="textbox"  id="sellInfo_customerObj_customerId_edit" name="sellInfo.customerObj.customerId" style="width: auto"/>
+			</span>
+		</div>
+		<div>
+			<span class="label">销售负责人:</span>
+			<span class="inputControl">
+				<input class="textbox" type="text" id="sellInfo_personName_edit" name="sellInfo.personName" style="width:200px" />
+
+			</span>
+
+		</div>
+	</form>
+</div>
+<script type="text/javascript" src="{% static 'js/SellInfo/sellInfo_manage.js' %}"></script>

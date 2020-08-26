@@ -1,0 +1,68 @@
+{% include 'check_logstate.html' %}
+{% load staticfiles %}
+<link rel="stylesheet" type="text/css" href="{% static '/css/supplyer.css' %}" />
+
+{% csrf_token %}
+<div id="supplyer_manage"></div>
+<div id="supplyer_manage_tool" style="padding:5px;">
+	<div style="margin-bottom:5px;">
+		<a href="#" class="easyui-linkbutton" iconCls="icon-edit-new" plain="true" onclick="supplyer_manage_tool.edit();">修改</a>
+		<a href="#" class="easyui-linkbutton" iconCls="icon-delete-new" plain="true" onclick="supplyer_manage_tool.remove();">删除</a>
+		<a href="#" class="easyui-linkbutton" iconCls="icon-reload" plain="true"  onclick="supplyer_manage_tool.reload();">刷新</a>
+		<a href="#" class="easyui-linkbutton" iconCls="icon-redo" plain="true" onclick="supplyer_manage_tool.redo();">取消选择</a>
+		<a href="#" class="easyui-linkbutton" iconCls="icon-export" plain="true" onclick="supplyer_manage_tool.exportExcel();">导出到excel</a>
+	</div>
+	<div style="padding:0 0 0 7px;color:#333;">
+		<form id="supplyerQueryForm" method="get">
+			供应商名称：<input type="text" class="textbox" id="supplyerName" name="supplyerName" style="width:110px" />
+			供应商电话：<input type="text" class="textbox" id="telephone" name="telephone" style="width:110px" />
+			联系人：<input type="text" class="textbox" id="personName" name="personName" style="width:110px" />
+			<a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="supplyer_manage_tool.search();">查询</a>
+		</form>	
+	</div>
+</div>
+
+<div id="supplyerEditDiv">
+	<form id="supplyerEditForm" enctype="multipart/form-data"  method="post">
+        {% csrf_token %}
+		<div>
+			<span class="label">供应商编号:</span>
+			<span class="inputControl">
+				<input class="textbox" type="text" id="supplyer_supplyerId_edit" name="supplyer.supplyerId" style="width:200px" />
+			</span>
+		</div>
+		<div>
+			<span class="label">供应商名称:</span>
+			<span class="inputControl">
+				<input class="textbox" type="text" id="supplyer_supplyerName_edit" name="supplyer.supplyerName" style="width:200px" />
+
+			</span>
+
+		</div>
+		<div>
+			<span class="label">供应商电话:</span>
+			<span class="inputControl">
+				<input class="textbox" type="text" id="supplyer_telephone_edit" name="supplyer.telephone" style="width:200px" />
+
+			</span>
+
+		</div>
+		<div>
+			<span class="label">联系人:</span>
+			<span class="inputControl">
+				<input class="textbox" type="text" id="supplyer_personName_edit" name="supplyer.personName" style="width:200px" />
+
+			</span>
+
+		</div>
+		<div>
+			<span class="label">供应商地址:</span>
+			<span class="inputControl">
+				<input class="textbox" type="text" id="supplyer_address_edit" name="supplyer.address" style="width:200px" />
+
+			</span>
+
+		</div>
+	</form>
+</div>
+<script type="text/javascript" src="{% static 'js/Supplyer/supplyer_manage.js' %}"></script>

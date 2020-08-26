@@ -1,0 +1,343 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1 , user-scalable=no">
+<title>产品进货查询</title>
+<link href="{% static 'plugins/bootstrap.css' %}" rel="stylesheet">
+<link href="{% static 'plugins/bootstrap-dashen.css' %}" rel="stylesheet">
+<link href="{% static 'plugins/font-awesome.css' %}" rel="stylesheet">
+<link href="{% static 'plugins/animate.css' %}" rel="stylesheet">
+<link href="{% static 'plugins/bootstrap-datetimepicker.min.css' %}" rel="stylesheet" media="screen">
+</head>
+<body style="margin-top:70px;">
+<div class="container">
+{% include 'header.html' %}
+	<div class="row"> 
+	<div class="col-md-3 wow fadeInLeft">
+		<div class="page-header">
+    		<h1>产品进货查询</h1>
+		</div>
+		<form name="buyInfoQueryForm" id="buyInfoQueryForm" action="{% url 'BuyInfo:frontList' %}" class="mar_t15" method="post">
+			 {% csrf_token %}
+            <div class="form-group">
+            	<label for="productObj_productNo">进货产品：</label>
+                <select id="productObj_productNo" name="productObj.productNo" class="form-control">
+                	<option value="">不限制</option>
+                    {% for productInfo in productInfos %}
+                        {% if productInfo.productNo == productObj_productNo %}
+                             <option value="{{ productInfo.productNo }}" selected>{{ productInfo.productName }}</option>
+                        {% else %}
+                            <option value="{{ productInfo.productNo }}">{{ productInfo.productName }}</option>
+                        {% endif %}
+                    {% endfor %}
+ 			</select>
+            </div>
+			<div class="form-group">
+				<label for="buyDate">进货日期:</label>
+				<input type="text" id="buyDate" name="buyDate" class="form-control"  placeholder="请选择进货日期" value="{{ buyDate }}" onclick="SelectDate(this,'yyyy-MM-dd')" />
+			</div>
+            <div class="form-group">
+            	<label for="supplyerObj_supplyerId">供应商：</label>
+                <select id="supplyerObj_supplyerId" name="supplyerObj.supplyerId" class="form-control">
+                	<option value="0">不限制</option>
+                    {% for supplyer in supplyers %}
+                        {% if supplyer.supplyerId == supplyerObj_supplyerId %}
+                             <option value="{{ supplyer.supplyerId }}" selected>{{ supplyer.supplyerName }}</option>
+                        {% else %}
+                            <option value="{{ supplyer.supplyerId }}">{{ supplyer.supplyerName }}</option>
+                        {% endif %}
+                    {% endfor %}
+ 			</select>
+            </div>
+			<div class="form-group">
+				<label for="personName">负责人:</label>
+				<input type="text" id="personName" name="personName" value="{{ personName }}" class="form-control" placeholder="请输入负责人">
+			</div>
+            <input type=hidden name=currentPage value="{{ currentPage }}" />
+            <button type="submit" class="btn btn-primary">查询</button>
+        </form>
+	</div>
+
+		<div class="col-md-9 wow fadeInDown" data-wow-duration="0.5s">
+			<div>
+				<!-- Nav tabs -->
+				<ul class="nav nav-tabs" role="tablist">
+			    	<li><a href="{% url 'Index:index' %}">首页</a></li>
+			    	<li role="presentation" class="active"><a href="#buyInfoListPanel" aria-controls="buyInfoListPanel" role="tab" data-toggle="tab">产品进货列表</a></li>
+			    	<li role="presentation" ><a href="{% url 'BuyInfo:frontAdd' %}" style="display:none;">添加产品进货</a></li>
+				</ul>
+			  	<!-- Tab panes -->
+			  	<div class="tab-content">
+				    <div role="tabpanel" class="tab-pane active" id="buyInfoListPanel">
+				    		<div class="row">
+				    			<div class="col-md-12 top5">
+				    				<div class="table-responsive">
+				    				<table class="table table-condensed table-hover">
+				    					<tr class="success bold"><td>序号</td><td>进货编号</td><td>进货产品</td><td>进货日期</td><td>进货单价</td><td>进货数量</td><td>供应商</td><td>负责人</td><td>操作</td></tr>
+                                        {% for buyInfo in buyInfos_page %}
+ 										<tr>
+ 											<td>{{ startIndex|add:forloop.counter }}</td>
+ 											<td>{{ buyInfo.buyId }}</td>
+ 											<td>{{ buyInfo.productObj.productName }}</td>
+ 											<td>{{ buyInfo.buyDate }}</td>
+ 											<td>{{ buyInfo.price }}</td>
+ 											<td>{{ buyInfo.count }}</td>
+ 											<td>{{ buyInfo.supplyerObj.supplyerName }}</td>
+ 											<td>{{ buyInfo.personName }}</td>
+ 											<td>
+ 												<a href="{% url 'BuyInfo:frontShow' buyInfo.buyId  %}"><i class="fa fa-info"></i>&nbsp;查看</a>&nbsp;
+ 												<a href="#" onclick="buyInfoEdit('{{ buyInfo.buyId }}');" style="display:none;"><i class="fa fa-pencil fa-fw"></i>编辑</a>&nbsp;
+ 												<a href="#" onclick="buyInfoDelete('{{ buyInfo.buyId }}');" style="display:none;"><i class="fa fa-trash-o fa-fw"></i>删除</a>
+ 											</td> 
+ 										</tr>
+ 										{% endfor %}
+				    				</table>
+				    				</div>
+				    			</div>
+				    		</div>
+
+				    		<div class="row">
+					            <div class="col-md-12">
+						            <nav class="pull-left">
+						                <ul class="pagination">
+						                    <li><a href="#" onclick="GoToPage({{ currentPage|add:-1 }},{{ totalPage }}>);" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
+                                            {% for page in pageList %}
+                                            {% if currentPage == page %}
+						                        <li class="active"><a href="#"  onclick="GoToPage({{ page }},{{ totalPage }});">{{ page }}</a></li>
+						                    {% else %}
+                                                <li><a href="#"  onclick="GoToPage({{ page }},{{ totalPage }});">{{ page }}</a></li>
+                                            {% endif %}
+                                            {% endfor %}
+						                    <li><a href="#" onclick="GoToPage({{ currentPage|add:1 }},{{ totalPage }});"><span aria-hidden="true">&raquo;</span></a></li>
+						                </ul>
+						            </nav>
+						            <div class="pull-right" style="line-height:75px;" >共有{{ recordNumber }}条记录，当前第{{ currentPage }}/{{ totalPage }} 页</div>
+					            </div>
+				            </div> 
+				    </div>
+				</div>
+			</div>
+		</div>
+		</div>
+	</div> 
+<div id="buyInfoEditDialog" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title"><i class="fa fa-edit"></i>&nbsp;产品进货信息编辑</h4>
+      </div>
+      <div class="modal-body" style="height:450px; overflow: scroll;">
+      	<form class="form-horizontal" name="buyInfoEditForm" id="buyInfoEditForm" enctype="multipart/form-data" method="post"  class="mar_t15">
+		    {% csrf_token %}
+		  <div class="form-group">
+			 <label for="buyInfo_buyId_edit" class="col-md-3 text-right">进货编号:</label>
+			 <div class="col-md-9"> 
+			 	<input type="text" id="buyInfo_buyId_edit" name="buyInfo.buyId" class="form-control" placeholder="请输入进货编号" readOnly>
+			 </div>
+		  </div> 
+		  <div class="form-group">
+		  	 <label for="buyInfo_productObj_productNo_edit" class="col-md-3 text-right">进货产品:</label>
+		  	 <div class="col-md-9">
+			    <select id="buyInfo_productObj_productNo_edit" name="buyInfo.productObj.productNo" class="form-control">
+                    {% for productInfo in productInfos %}
+                        <option value="{{ productObj.productNo }}">{{ productObj.productName }}</option>
+                    {% endfor %}
+			    </select>
+		  	 </div>
+		  </div>
+		  <div class="form-group">
+		  	 <label for="buyInfo_buyDate_edit" class="col-md-3 text-right">进货日期:</label>
+		  	 <div class="col-md-9">
+                <div class="input-group date buyInfo_buyDate_edit col-md-12" data-link-field="buyInfo_buyDate_edit"  data-link-format="yyyy-mm-dd">
+                    <input class="form-control" id="buyInfo_buyDate_edit" name="buyInfo.buyDate" size="16" type="text" value="" placeholder="请选择进货日期" readonly>
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                </div>
+		  	 </div>
+		  </div>
+		  <div class="form-group">
+		  	 <label for="buyInfo_price_edit" class="col-md-3 text-right">进货单价:</label>
+		  	 <div class="col-md-9">
+			    <input type="text" id="buyInfo_price_edit" name="buyInfo.price" class="form-control" placeholder="请输入进货单价">
+			 </div>
+		  </div>
+		  <div class="form-group">
+		  	 <label for="buyInfo_count_edit" class="col-md-3 text-right">进货数量:</label>
+		  	 <div class="col-md-9">
+			    <input type="text" id="buyInfo_count_edit" name="buyInfo.count" class="form-control" placeholder="请输入进货数量">
+			 </div>
+		  </div>
+		  <div class="form-group">
+		  	 <label for="buyInfo_supplyerObj_supplyerId_edit" class="col-md-3 text-right">供应商:</label>
+		  	 <div class="col-md-9">
+			    <select id="buyInfo_supplyerObj_supplyerId_edit" name="buyInfo.supplyerObj.supplyerId" class="form-control">
+                    {% for supplyer in supplyers %}
+                        <option value="{{ supplyerObj.supplyerId }}">{{ supplyerObj.supplyerName }}</option>
+                    {% endfor %}
+			    </select>
+		  	 </div>
+		  </div>
+		  <div class="form-group">
+		  	 <label for="buyInfo_personName_edit" class="col-md-3 text-right">负责人:</label>
+		  	 <div class="col-md-9">
+			    <input type="text" id="buyInfo_personName_edit" name="buyInfo.personName" class="form-control" placeholder="请输入负责人">
+			 </div>
+		  </div>
+		</form> 
+	    <style>#buyInfoEditForm .form-group {margin-bottom:5px;}  </style>
+      </div>
+      <div class="modal-footer"> 
+      	<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+      	<button type="button" class="btn btn-primary" onclick="ajaxBuyInfoModify();">提交</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+{% include 'footer.html' %}
+<script src="{% static 'plugins/jquery.min.js' %}"></script>
+<script src="{% static 'plugins/bootstrap.js' %}"></script>
+<script src="{% static 'plugins/wow.min.js' %}"></script>
+<script src="{% static 'plugins/bootstrap-datetimepicker.min.js' %}"></script>
+<script src="{% static 'plugins/locales/bootstrap-datetimepicker.zh-CN.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jsdate.js' %}"></script>
+<script>
+/*跳转到查询结果的某页*/
+function GoToPage(currentPage,totalPage) {
+    if(currentPage==0) return;
+    if(currentPage>totalPage) return;
+    document.buyInfoQueryForm.currentPage.value = currentPage;
+    document.buyInfoQueryForm.submit();
+}
+
+/*可以直接跳转到某页*/
+function changepage(totalPage)
+{
+    var pageValue=document.buyInfoQueryForm.pageValue.value;
+    if(pageValue>totalPage) {
+        alert('你输入的页码超出了总页数!');
+        return ;
+    }
+    document.buyInfoQueryForm.currentPage.value = pageValue;
+    documentbuyInfoQueryForm.submit();
+}
+
+/*弹出修改产品进货界面并初始化数据*/
+function buyInfoEdit(buyId) {
+	$.ajax({
+		url :  '/BuyInfo/update/' + buyId,
+		type : "get",
+		dataType: "json",
+		success : function (buyInfo, response, status) {
+			if (buyInfo) {
+				$("#buyInfo_buyId_edit").val(buyInfo.buyId);
+				$.ajax({
+					url: "{% url 'ProductInfo:listAll' %}",
+					type: "get",
+					success: function(productInfos,response,status) { 
+						$("#buyInfo_productObj_productNo_edit").empty();
+						var html="";
+		        		$(productInfos).each(function(i,productInfo){
+		        			html += "<option value='" + productInfo.productNo + "'>" + productInfo.productName + "</option>";
+		        		});
+		        		$("#buyInfo_productObj_productNo_edit").html(html);
+		        		$("#buyInfo_productObj_productNo_edit").val(buyInfo.productObjPri);
+					}
+				});
+				$("#buyInfo_buyDate_edit").val(buyInfo.buyDate);
+				$("#buyInfo_price_edit").val(buyInfo.price);
+				$("#buyInfo_count_edit").val(buyInfo.count);
+				$.ajax({
+					url: "{% url 'Supplyer:listAll' %}",
+					type: "get",
+					success: function(supplyers,response,status) { 
+						$("#buyInfo_supplyerObj_supplyerId_edit").empty();
+						var html="";
+		        		$(supplyers).each(function(i,supplyer){
+		        			html += "<option value='" + supplyer.supplyerId + "'>" + supplyer.supplyerName + "</option>";
+		        		});
+		        		$("#buyInfo_supplyerObj_supplyerId_edit").html(html);
+		        		$("#buyInfo_supplyerObj_supplyerId_edit").val(buyInfo.supplyerObjPri);
+					}
+				});
+				$("#buyInfo_personName_edit").val(buyInfo.personName);
+				$('#buyInfoEditDialog').modal('show');
+			} else {
+				alert("获取信息失败！");
+			}
+		}
+	});
+}
+
+/*删除产品进货信息*/
+function buyInfoDelete(buyId) {
+    var csrf = $('input[name="csrfmiddlewaretoken"]').val();
+	if(confirm("确认删除这个记录")) {
+		$.ajax({
+			type : "POST",
+			url : "/BuyInfo/deletes",
+			data : {
+				buyIds : buyId,
+                "csrfmiddlewaretoken": csrf
+			},
+			success : function (obj) {
+				if (obj.success) {
+					alert("删除成功");
+					$("#buyInfoQueryForm").submit();
+					//location.href= basePath + "BuyInfo/frontlist";
+				}
+				else 
+					alert(obj.message);
+			},
+		});
+	}
+}
+
+/*ajax方式提交产品进货信息表单给服务器端修改*/
+function ajaxBuyInfoModify() {
+	$.ajax({
+		url :   '/BuyInfo/update/' + $("#buyInfo_buyId_edit").val(),
+		type : "post",
+		dataType: "json",
+		data: new FormData($("#buyInfoEditForm")[0]),
+		success : function (obj, response, status) {
+            if(obj.success){
+                alert("信息修改成功！");
+                $("#buyInfoQueryForm").submit();
+            }else{
+                alert(obj.message);
+            } 
+		},
+		processData: false,
+		contentType: false,
+	});
+}
+
+$(function(){
+	/*小屏幕导航点击关闭菜单*/
+    $('.navbar-collapse a').click(function(){
+        $('.navbar-collapse').collapse('hide');
+    });
+    new WOW().init();
+
+    /*进货日期组件*/
+    $('.buyInfo_buyDate_edit').datetimepicker({
+    	language:  'zh-CN',  //语言
+    	format: 'yyyy-mm-dd',
+    	minView: 2,
+    	weekStart: 1,
+    	todayBtn:  1,
+    	autoclose: 1,
+    	minuteStep: 1,
+    	todayHighlight: 1,
+    	startView: 2,
+    	forceParse: 0
+    });
+})
+</script>
+</body>
+</html>
+

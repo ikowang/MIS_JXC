@@ -1,0 +1,89 @@
+{% include 'check_logstate.html' %}
+{% load staticfiles %}
+<link rel="stylesheet" type="text/css" href="{% static '/css/productInfo.css' %}" />
+
+{% csrf_token %}
+<div id="productInfo_manage"></div>
+<div id="productInfo_manage_tool" style="padding:5px;">
+	<div style="margin-bottom:5px;">
+		<a href="#" class="easyui-linkbutton" iconCls="icon-edit-new" plain="true" onclick="productInfo_manage_tool.edit();">修改</a>
+		<a href="#" class="easyui-linkbutton" iconCls="icon-delete-new" plain="true" onclick="productInfo_manage_tool.remove();">删除</a>
+		<a href="#" class="easyui-linkbutton" iconCls="icon-reload" plain="true"  onclick="productInfo_manage_tool.reload();">刷新</a>
+		<a href="#" class="easyui-linkbutton" iconCls="icon-redo" plain="true" onclick="productInfo_manage_tool.redo();">取消选择</a>
+		<a href="#" class="easyui-linkbutton" iconCls="icon-export" plain="true" onclick="productInfo_manage_tool.exportExcel();">导出到excel</a>
+	</div>
+	<div style="padding:0 0 0 7px;color:#333;">
+		<form id="productInfoQueryForm" method="get">
+			产品编号：<input type="text" class="textbox" id="productNo" name="productNo" style="width:110px" />
+			产品类别：<input class="textbox" type="text" id="productClass_productClassId_query" name="productClass.productClassId" style="width: auto"/>
+			产品名称：<input type="text" class="textbox" id="productName" name="productName" style="width:110px" />
+			<a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="productInfo_manage_tool.search();">查询</a>
+		</form>	
+	</div>
+</div>
+
+<div id="productInfoEditDiv">
+	<form id="productInfoEditForm" enctype="multipart/form-data"  method="post">
+        {% csrf_token %}
+		<div>
+			<span class="label">产品编号:</span>
+			<span class="inputControl">
+				<input class="textbox" type="text" id="productInfo_productNo_edit" name="productInfo.productNo" style="width:200px" />
+			</span>
+		</div>
+		<div>
+			<span class="label">产品类别:</span>
+			<span class="inputControl">
+				<input class="textbox"  id="productInfo_productClass_productClassId_edit" name="productInfo.productClass.productClassId" style="width: auto"/>
+			</span>
+		</div>
+		<div>
+			<span class="label">产品名称:</span>
+			<span class="inputControl">
+				<input class="textbox" type="text" id="productInfo_productName_edit" name="productInfo.productName" style="width:200px" />
+
+			</span>
+
+		</div>
+		<div>
+			<span class="label">产品图片:</span>
+			<span class="inputControl">
+				<img id="productInfo_productPhotoImg" width="200px" border="0px"/><br/>
+				<input id="productInfo_productPhoto" name="productInfo.productPhoto" type="file" size="50" />
+			</span>
+		</div>
+		<div>
+			<span class="label">产品单价:</span>
+			<span class="inputControl">
+				<input class="textbox" type="text" id="productInfo_price_edit" name="productInfo.price" style="width:80px" />
+
+			</span>
+
+		</div>
+		<div>
+			<span class="label">产品库存:</span>
+			<span class="inputControl">
+				<input class="textbox" type="text" id="productInfo_leftCount_edit" name="productInfo.leftCount" style="width:80px" />
+
+			</span>
+
+		</div>
+		<div>
+			<span class="label">生产日期:</span>
+			<span class="inputControl">
+				<input class="textbox" type="text" id="productInfo_madeDate_edit" name="productInfo.madeDate" />
+
+			</span>
+
+		</div>
+		<div>
+			<span class="label">产品描述:</span>
+			<span class="inputControl">
+				<textarea name="productInfo.productDesc" id="productInfo_productDesc_edit" type="text/plain"   style="width:100%;height:500px;"></textarea>
+
+			</span>
+
+		</div>
+	</form>
+</div>
+<script type="text/javascript" src="{% static 'js/ProductInfo/productInfo_manage.js' %}"></script>
